@@ -1,0 +1,14 @@
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\bin\Debug\net8.0\etapa1.exe
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\bin\Debug\net8.0\etapa1.deps.json
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\bin\Debug\net8.0\etapa1.runtimeconfig.json
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\bin\Debug\net8.0\etapa1.dll
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\bin\Debug\net8.0\etapa1.pdb
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\etapa1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\etapa1.AssemblyInfoInputs.cache
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\etapa1.AssemblyInfo.cs
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\etapa1.csproj.CoreCompileInputs.cache
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\etapa1.dll
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\refint\etapa1.dll
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\etapa1.pdb
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\etapa1.genruntimeconfig.cache
+C:\Users\Roy\Desktop\cursoDotNet\etapa1\obj\Debug\net8.0\ref\etapa1.dll
