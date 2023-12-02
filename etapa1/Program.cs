@@ -51,11 +51,37 @@ int[] setWithdrawals(){
 #endregion
 
 #region verBilletesEntregados
+int[] getMinBilletes(int numRetiro, int dinero){
+    int[] BILLETES = {500, 200, 100, 50, 20, 10, 5, 1};
+    int[] amountMoney = {0, 0};
+    Console.Write($"Retiro #{numRetiro} = ${dinero} -> ");
+    for (int i = 0; i < BILLETES.Length; i++ ){
+        if (dinero % BILLETES[i] == dinero){
+            continue;
+        }else{
+            int cantidadBillete = dinero / BILLETES[i]; 
+            int resto = dinero - cantidadBillete*BILLETES[i];
+            Console.Write($"{cantidadBillete}*${BILLETES[i]} ");
+            dinero = resto;
+            if (i >= 5) amountMoney[1] += cantidadBillete;
+            else amountMoney[0] += cantidadBillete;
+        }
+    }
+    return amountMoney;
+}
+
 void viewMoneyInside(int[] retiros){
     Console.Clear();
-    foreach (int retiro in retiros){
-        Console.WriteLine(retiro);
+    int totalBilletes = 0;
+    int totalMonedas = 0;
+    for (int i = 0; i < retiros.Length ; i++){
+        int[] cantidad = getMinBilletes(i+1, retiros[i]);
+        Console.WriteLine($"\nBilletes entregados {cantidad[0]}");
+        Console.WriteLine($"Monedas entregados {cantidad[1]}\n");
+        totalBilletes += cantidad[0];
+        totalMonedas += cantidad[1];
     }
+    Console.WriteLine($"Se entregaron {totalBilletes} billetes y {totalMonedas} monedas.");
     Console.Write("Ingrese Enter para continuar");
     Console.ReadKey();
 }
