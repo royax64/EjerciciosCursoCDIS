@@ -17,12 +17,17 @@ public class Usuario {
     [JsonProperty]
     protected decimal saldo {get; set;}
 
+    public Usuario() {}
+
     public Usuario(int myID, string myName, string myEmail, decimal mySaldo){
         this.id = myID;
         this.nombre = myName;
         this.email = myEmail;
-        this.fechaRegistro = DateTime.Now;
-        setSaldo(mySaldo);
+        this.fechaRegistro = DateTime.Now; 
+    }
+
+    public DateTime getFechaRegistro(){
+        return fechaRegistro;
     }
 
     public virtual string verInfo(){
@@ -34,7 +39,7 @@ public class Usuario {
         Saldo: {this.saldo}";
     }
 
-    public virtual string verInfo(string saludo){
+    public string verInfo(string saludo){
         return @$"
         {saludo}
         ID: {this.id}
