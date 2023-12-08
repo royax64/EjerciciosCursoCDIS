@@ -2,7 +2,7 @@ namespace Banco;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public static class Guardar{
+public static class Almacenaje{
     static string filePath = AppDomain.CurrentDomain.BaseDirectory + @"\usuarios.json"; 
   
     public static void añadirUsuarioArchivo(object usr){
@@ -18,8 +18,21 @@ public static class Guardar{
         
         JsonSerializerSettings config = new JsonSerializerSettings { Formatting = Formatting.Indented };
         string json = JsonConvert.SerializeObject(listaUsuarios, config);
-        Console.WriteLine(json);
         File.WriteAllText(filePath, json);
+    }
+
+    public static bool eliminarUsuarioArchivo(int id){
+        var listaUsuarios = getAllUsuarios();
+        if (!listaUsuarios.Any())
+            return false;
+        
+        var usuarioAeliminar = listaUsuarios.Where(u => u.getID() == id).Single();
+        listaUsuarios.Remove(usuarioAeliminar);
+
+        JsonSerializerSettings config = new JsonSerializerSettings { Formatting = Formatting.Indented };
+        string json = JsonConvert.SerializeObject(listaUsuarios, config);
+        File.WriteAllText(filePath, json);
+        return true;        
     }
 
     public static List<Usuario> getAllUsuarios(){
@@ -50,7 +63,7 @@ public static class Guardar{
     }
 
     public static List<Usuario> getNuevosUsuarios(){
-        var listaUsuarios = Guardar.getAllUsuarios();
+        var listaUsuarios = getAllUsuarios();
         var usuariosDeHoy = listaUsuarios.Where(
             usr => usr.getFechaRegistro().Date.Equals(DateTime.Today)
             ).ToList();

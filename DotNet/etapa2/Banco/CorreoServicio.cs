@@ -12,16 +12,23 @@ public static class CorreoServicio {
         mensaje.Body = new TextPart("plain") {Text = obtenerUsuariosHoy()};
         
         using (var cliente = new SmtpClient()){
-            cliente.Connect("smtp-mail.outlook.com", 587, false);
-            cliente.Authenticate("yo@hotmail.com", "chupaUnPerro");
-            cliente.Send(mensaje);
-            cliente.Disconnect(true);
+            try{
+                cliente.Connect("smtp-mail.outlook.com", 587, false);
+                cliente.Authenticate("yo@hotmail.com", "chupaUnPerro");
+                cliente.Send(mensaje);
+                cliente.Disconnect(true);
+            } catch (MailKit.Security.AuthenticationException e){
+                Console.WriteLine("Error: Usuario o contraseña incorrecta.");
+            } catch (Exception e){
+                Console.WriteLine("Error: No se pudo enviar tu correo. ¿Tienes internet?");
+            }
+
         }
     }
 
     private static string obtenerUsuariosHoy(){
-        List<Usuario> usrHoy = Guardar.getNuevosUsuarios();
-        if (usrHoy.Count == 0) return "No hay usuarios registrados hoy";
+        List<Usuario> usrHoy = Almacenaje.getNuevosUsuarios();
+        if (!usrHoy.Any()) return "No hay usuarios registrados hoy";
 
         string texto = "Usuarios agregados hoy:\n";
 

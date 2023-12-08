@@ -51,6 +51,10 @@ public class Usuario {
 
     public virtual void setSaldo(decimal mySaldo){
         if (mySaldo > 0) this.saldo += mySaldo;
-    } 
+    }
+
+    public int getID(){
+        return id;
+    }
 }
 
