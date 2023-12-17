@@ -54,6 +54,18 @@ alter proc crearTransaccion
 	@cantidad decimal(10,2),
 	@cuentaext int = null
 as
+	if (select id from Cuenta where id = @cuentaID) is null
+	begin
+		raiserror('Cuenta no existente', 2, 1)
+		return 1
+	end
+
+	if (select id from TipoTransaccion where id = @tipo) is null
+	begin
+		raiserror('Tipo no existente', 2, 1)
+		return 1
+	end
+
 	declare @saldoActual decimal(10,2), @saldoNuevo decimal (10,2)
 	set @saldoActual = (select saldo from Cuenta where id = @cuentaID)
 
@@ -65,8 +77,8 @@ as
 		set @saldoNuevo = @saldoActual + @cantidad
 	end
 
-	begin 
-	update Cuenta transactionset saldo = @saldoNuevo where id = @cuentaID
+	begin transaction
+	update Cuenta set saldo = @saldoNuevo where id = @cuentaID
 	insert into Transaccion (cuentaID, tipoTransaccion, cantidad, cuentaExterna)
 	values (@cuentaID, @tipo, @cantidad, @cuentaext);
 
