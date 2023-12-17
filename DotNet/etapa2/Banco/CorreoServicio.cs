@@ -7,14 +7,14 @@ public static class CorreoServicio {
     public static void enviar(){
         var mensaje = new MimeMessage();
         mensaje.From.Add(new MailboxAddress ("Yo","yo@hotmail.com"));
-        mensaje.To.Add(new MailboxAddress ("Yo también","yoTambien@hotmail.com"));
+        mensaje.To.Add(new MailboxAddress ("Yo malo","yomalo@hotmail.com"));
         mensaje.Subject = "Tus nuevos usuarios de hoy";
         mensaje.Body = new TextPart("plain") {Text = obtenerUsuariosHoy()};
         
         using (var cliente = new SmtpClient()){
             try{
                 cliente.Connect("smtp-mail.outlook.com", 587, false);
-                cliente.Authenticate("yo@hotmail.com", "chupaUnPerro");
+                cliente.Authenticate("yo@hotmail.com", "ChupaUnPerro");
                 cliente.Send(mensaje);
                 cliente.Disconnect(true);
             } catch (MailKit.Security.AuthenticationException e){

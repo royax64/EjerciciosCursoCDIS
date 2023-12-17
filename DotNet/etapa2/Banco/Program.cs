@@ -27,8 +27,8 @@ Opción -> ";
 
 void menu(){
     int op = 0;
-    List<Usuario> listaUsuarios = Almacenaje.getAllUsuarios();
     while(op != 3){
+	List<Usuario> listaUsuarios = Almacenaje.getAllUsuarios();
         op = imprimirMenuPrincipal();
         if (op > 3 || op <= 0){ //Validar
             Console.Write("Error: Ingrese opciones 1, 2, o 3...\nPresione Enter...");
