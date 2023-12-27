@@ -10,10 +10,10 @@ select * from Transaccion
 */
 
 --PRIMER PROCEDIMIENTO ALMACENADO
-create proc SelectClient
+alter proc SelectClient
 	@ClientID int = null
 as
-	if @ClientID is null
+	if @ClientID is null or (select id from cliente where id = @ClientID) is null
 	begin
 		select * from cliente
 	end
@@ -23,7 +23,7 @@ as
 go
 
 exec SelectClient
-exec SelectClient @ClientID = 3
+exec SelectClient @ClientID = 50
 go
 
 --SEGUNDO PROCEDIMIENTO ALMACENADO
@@ -44,7 +44,7 @@ as
 go
 
 exec insertCliente @nombre = '6hrhyerh', @numero = '24759256729', @correo = '6hrhyerh@gmail.com'
-exec insertCliente @nombre = '6hrhyerh', @numero = '24759256729', @correo = 'roymalo@gmail.com'
+exec insertCliente @nombre = '6hrhyerh', @numero = '24759256729', @correo = 'whfoihowi@gmail.com'
 go
 
 --TERCER PROCEDIMIENTO ALMACENADO
@@ -94,7 +94,7 @@ as
 go
 
 exec crearTransaccion @cuentaID = 9, @tipo = 1, @cantidad = 100000, @cuentaext = null
-exec crearTransaccion @cuentaID = 9, @tipo = 2, @cantidad = 100000, @cuentaext = null
+exec crearTransaccion @cuentaID = 9, @tipo = 2, @cantidad = 10000000, @cuentaext = null
 go 
 
 --HACIENDO UN BACKUP
