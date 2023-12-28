@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BankAPI.Data.BankModels;
 
@@ -15,8 +16,10 @@ public partial class Cuentum
 
     public DateTime FechaRegistro { get; set; }
 
+    [JsonIgnore]
     public virtual Cliente IdClienteNavigation { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual TipoCuentum TipoCuentaNavigation { get; set; } = null!;
 
     public virtual ICollection<Transaccion> Transaccions { get; set; } = new List<Transaccion>();

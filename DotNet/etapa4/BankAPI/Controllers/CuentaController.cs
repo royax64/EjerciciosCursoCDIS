@@ -1,5 +1,6 @@
 using BankAPI.Services;
 using BankAPI.Data.BankModels;
+using BankAPI.Data.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers;
@@ -41,20 +42,27 @@ public class CuentaController: ControllerBase{
     } */
 
     [HttpPost]
-    public async Task<IActionResult> Create(Cuentum cuenta){
-        var newCuenta = await _servicio.Create(cuenta);
+    public async Task<IActionResult> Create(CuentaDTO cuenta){
+        var clientes = await _servicio.GetClientes();
+        var clienteCuenta = clientes.Where(c => c.Id == cuenta.IdCliente);
 
-        return CreatedAtAction(nameof(GetById), new {id = newCuenta.Id}, newCuenta);
+        if (!clienteCuenta.Any()){
+            return BadRequest();
+        } else {
+            var newCuenta = await _servicio.Create(cuenta);
+            return CreatedAtAction(nameof(GetById), new {id = newCuenta.Id}, newCuenta);
+        } 
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, Cuentum cuenta){
+    public async Task<IActionResult> Update(int id, CuentaDTO cuenta){
+        var clientes = await _servicio.GetClientes();
         if (id != cuenta.Id)
             return BadRequest();
 
         var cuentaOnDB = await _servicio.GetById(id);
 
-        if (cuentaOnDB is not null){
+        if (cuentaOnDB is not null && clientes.Where(c => c.Id == cuenta.IdCliente).Any()){
             await _servicio.Update(id, cuenta);
             return NoContent();
         } else {
