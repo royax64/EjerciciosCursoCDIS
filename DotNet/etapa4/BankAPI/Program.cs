@@ -9,7 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSqlServer<BancoContext>(builder.Configuration.GetConnectionString("BankConnection"));
-builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<ClienteService>();
+builder.Services.AddScoped<CuentaService>();
 
 var app = builder.Build();
 

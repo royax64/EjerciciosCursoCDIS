@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankAPI.Services;
 
-public class ClientService{
+public class ClienteService{
     private readonly BancoContext _contexto;
 
-    public ClientService (BancoContext contexto){
+    public ClienteService (BancoContext contexto){
         _contexto = contexto;
     }
 
@@ -17,6 +17,11 @@ public class ClientService{
 
     public async Task<Cliente?> GetById(int id){
         return await _contexto.Clientes.FindAsync(id);
+    }
+
+    public async Task<IEnumerable<Cuentum>> GetAccountsByClientId(int id){
+        var allCuentas = await _contexto.Cuenta.ToListAsync();  
+        return allCuentas.Where(c => c.IdCliente == id);
     }
 
     public async Task<Cliente> Create(Cliente cliente){
@@ -38,6 +43,15 @@ public class ClientService{
         }
     }
 
+    public async Task DeleteAccountsFromClient(int id){
+        var cuentasDeCliente = await GetAccountsByClientId(id);
+
+        if (cuentasDeCliente is not null){
+            _contexto.Cuenta.RemoveRange(cuentasDeCliente);
+            await _contexto.SaveChangesAsync();
+        }
+    }
+
     //NO funciona porque el insert crea una cuenta por defecto
     //Hay que eliminar la cuenta asociada al cliente
     //Recuerda que hay un trigger que afecta el insert
@@ -45,6 +59,7 @@ public class ClientService{
         var clienteOnDB = await GetById(id);
 
         if (clienteOnDB is not null){
+            await DeleteAccountsFromClient(id);
             _contexto.Clientes.Remove(clienteOnDB);
             await _contexto.SaveChangesAsync();
         }

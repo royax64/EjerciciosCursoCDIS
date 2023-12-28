@@ -8,9 +8,9 @@ namespace BankAPI.Controllers;
 [Route("[controller]")]
 public class ClienteController: ControllerBase{
 
-    private readonly ClientService _servicio;
+    private readonly ClienteService _servicio;
 
-    public ClienteController(ClientService servicio){
+    public ClienteController(ClienteService servicio){
         _servicio = servicio;
     }
 
@@ -52,9 +52,6 @@ public class ClienteController: ControllerBase{
     }
 
     [HttpDelete("{id}")]
-    //NO funciona porque el insert crea una cuenta por defecto
-    //Hay que eliminar la cuenta asociada al cliente
-    //Recuerda que hay un trigger que afecta el insert
     public async Task<IActionResult> Delete(int id){
         var clienteOnDB = await _servicio.GetById(id);
 
