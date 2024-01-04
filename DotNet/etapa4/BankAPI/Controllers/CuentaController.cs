@@ -25,21 +25,10 @@ public class CuentaController: ControllerBase{
         var cuenta = await _servicio.GetById(id);
 
         if (cuenta is null)
-            return NotFound();
+            return CuentaNotFound(id);
         
         return cuenta;
     }
-
-/*     [HttpGet("cliente/{id}")]
-    public async Task<IEnumerable<Cuentum>> GetAccountsByClientId(int id){
-        var cuentasUser = await _servicio.GetAccountsByClientId(id);
-
-        if (cuentasUser is not null){
-            return cuentasUser;
-        } else {
-            return (IEnumerable<Cuentum>) NotFound();
-        }        
-    } */
 
     [HttpPost]
     public async Task<IActionResult> Create(CuentaDTO cuenta){
@@ -47,7 +36,7 @@ public class CuentaController: ControllerBase{
         var clienteCuenta = clientes.Where(c => c.Id == cuenta.IdCliente);
 
         if (!clienteCuenta.Any()){
-            return BadRequest();
+            return BadRequest(new {message = $"Client id {clienteCuenta.Id} from request does not exist."});;
         } else {
             var newCuenta = await _servicio.Create(cuenta);
             return CreatedAtAction(nameof(GetById), new {id = newCuenta.Id}, newCuenta);
@@ -58,7 +47,7 @@ public class CuentaController: ControllerBase{
     public async Task<IActionResult> Update(int id, CuentaDTO cuenta){
         var clientes = await _servicio.GetClientes();
         if (id != cuenta.Id)
-            return BadRequest();
+            return BadRequest(new {message = $"Account id {cliente.Id} from request does not match id from route {id}."});
 
         var cuentaOnDB = await _servicio.GetById(id);
 
@@ -66,7 +55,7 @@ public class CuentaController: ControllerBase{
             await _servicio.Update(id, cuenta);
             return NoContent();
         } else {
-            return NotFound();
+            return CuentaNotFound(id);
         } 
     }
 
@@ -78,8 +67,12 @@ public class CuentaController: ControllerBase{
             await _servicio.Delete(id);
             return Ok();
         } else {
-            return NotFound();
+            return CuentaNotFound(id);
         } 
+    }
+
+    public IActionResult CuentaNotFound(int id){
+        return NotFound(new {message = $"An account with id #{id} does not exist."});
     }
  
 }

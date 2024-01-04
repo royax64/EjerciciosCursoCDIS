@@ -24,7 +24,7 @@ public class ClienteController: ControllerBase{
         var cliente = await _servicio.GetById(id);
 
         if (cliente is null)
-            return NotFound();
+            return ClienteNotFound(id);
         
         return cliente;
     }
@@ -39,7 +39,7 @@ public class ClienteController: ControllerBase{
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, Cliente cliente){
         if (id != cliente.Id)
-            return BadRequest();
+            return BadRequest(new {message = $"Account id {cliente.Id} from request does not match id from route {id}."});
 
         var clienteOnDB = await _servicio.GetById(id);
 
@@ -47,7 +47,7 @@ public class ClienteController: ControllerBase{
             await _servicio.Update(id, cliente);
             return NoContent();
         } else {
-            return NotFound();
+            return ClienteNotFound(id);
         } 
     }
 
@@ -59,8 +59,12 @@ public class ClienteController: ControllerBase{
             await _servicio.Delete(id);
             return Ok();
         } else {
-            return NotFound();
+            return ClienteNotFound(id);
         } 
+    }
+
+    public IActionResult ClienteNotFound(int id){
+        return NotFound(new {message = $"A client with id #{id} does not exist."});
     }
  
 }
