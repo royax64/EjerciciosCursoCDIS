@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("API/[controller]")]
 public class CuentaController: ControllerBase{
 
     private readonly CuentaService _servicio;
@@ -21,7 +21,7 @@ public class CuentaController: ControllerBase{
         this._clienteServicio = clienteServicio;
     }
 
-    [HttpGet]  
+    [HttpGet("all")]  
     public async Task<IEnumerable<CuentaDTOout>>  Get(){
         return await _servicio.Get();
     }
@@ -36,7 +36,7 @@ public class CuentaController: ControllerBase{
         return cuenta;
     }
 
-    [HttpPost]
+    [HttpPost("new")]
     public async Task<IActionResult> Create(CuentaDTOIn cuenta){
         var (isValid, message) = await ValidateNewCuenta(cuenta);
 
@@ -48,7 +48,7 @@ public class CuentaController: ControllerBase{
         } 
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> Update(int id, CuentaDTOIn cuenta){
         var (isValid, message) = await ValidateNewCuenta(cuenta);
 
@@ -65,7 +65,7 @@ public class CuentaController: ControllerBase{
         } 
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id){
         var cuentaOnDB = await _servicio.GetById(id);
 
@@ -77,10 +77,12 @@ public class CuentaController: ControllerBase{
         } 
     }
 
+    [NonAction]
     public NotFoundObjectResult CuentaNotFound(int id){
         return NotFound(new {message = $"An account with id #{id} does not exist."});
     }
 
+    [NonAction]
     public async Task<(bool isValid, string message)> ValidateNewCuenta(CuentaDTOIn cuenta){
         var clientes = await _clienteServicio.Get();
         var clienteCuenta = clientes.Where(c => c.Id == cuenta.IdCliente);

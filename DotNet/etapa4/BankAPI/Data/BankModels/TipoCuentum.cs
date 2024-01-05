@@ -11,5 +11,5 @@ public partial class TipoCuentum
 
     public DateTime FechaRegistro { get; set; }
 
-    public virtual ICollection<Cuentum>? Cuenta { get; set; } = new List<Cuentum>();
+    public virtual ICollection<Cuentum> Cuenta { get; set; } = new List<Cuentum>();
 }

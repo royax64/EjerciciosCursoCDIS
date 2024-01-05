@@ -16,6 +16,8 @@ public partial class BancoContext : DbContext
     {
     }
 
+    public virtual DbSet<Administrador> Administradors { get; set; }
+
     public virtual DbSet<Cliente> Clientes { get; set; }
 
     public virtual DbSet<Cuentum> Cuenta { get; set; }
@@ -28,6 +30,39 @@ public partial class BancoContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Administrador>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Administ__3213E83F663D9053");
+
+            entity.ToTable("Administrador");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Correo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("correo");
+            entity.Property(e => e.FechaRegistro)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("fechaRegistro");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("nombre");
+            entity.Property(e => e.NumeroTelefono)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("numeroTelefono");
+            entity.Property(e => e.Passwrd)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("passwrd");
+            entity.Property(e => e.Tipo)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("tipo");
+        });
+
         modelBuilder.Entity<Cliente>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__cliente__3213E83FA1F2B20E");

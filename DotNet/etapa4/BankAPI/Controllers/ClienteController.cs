@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("API/[controller]")]
 public class ClienteController: ControllerBase{
 
     private readonly ClienteService _servicio;
@@ -14,7 +14,7 @@ public class ClienteController: ControllerBase{
         _servicio = servicio;
     }
 
-    [HttpGet]  
+    [HttpGet("all")]  
     public async Task<IEnumerable<Cliente>>  Get(){
         return await _servicio.Get();
     }
@@ -29,14 +29,14 @@ public class ClienteController: ControllerBase{
         return cliente;
     }
 
-    [HttpPost]
+    [HttpPost("new")]
     public async Task<IActionResult> Create(Cliente cliente){
         var newCliente = await _servicio.Create(cliente);
 
         return CreatedAtAction(nameof(GetById), new {id = newCliente.Id}, newCliente);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> Update(int id, Cliente cliente){
         if (id != cliente.Id)
             return BadRequest(new {message = $"Account id {cliente.Id} from request does not match id from route {id}."});
@@ -51,7 +51,7 @@ public class ClienteController: ControllerBase{
         } 
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id){
         var clienteOnDB = await _servicio.GetById(id);
 
@@ -63,6 +63,7 @@ public class ClienteController: ControllerBase{
         } 
     }
 
+    [NonAction]
     public NotFoundObjectResult ClienteNotFound(int id){
         return NotFound(new {message = $"A client with id #{id} does not exist."});
     }

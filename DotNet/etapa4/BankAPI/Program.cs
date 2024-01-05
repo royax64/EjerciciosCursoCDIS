@@ -13,6 +13,7 @@ builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<CuentaService>();
 builder.Services.AddScoped<TipoCuentaService>();
 builder.Services.AddScoped<TipoTransaccionService>();
+builder.Services.AddScoped<AdminLoginService>();
 
 var app = builder.Build();
 
