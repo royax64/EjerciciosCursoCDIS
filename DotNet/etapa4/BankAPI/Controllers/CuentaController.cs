@@ -10,19 +10,25 @@ namespace BankAPI.Controllers;
 public class CuentaController: ControllerBase{
 
     private readonly CuentaService _servicio;
+    private readonly ClienteService _clienteServicio;
+    private readonly TipoCuentaService _tipoCuentaServicio;
 
-    public CuentaController (CuentaService servicio){
-        _servicio = servicio;
+    public CuentaController (CuentaService servicio,
+                            TipoCuentaService tipoCuentaServicio,
+                            ClienteService clienteServicio){
+        this._servicio = servicio;
+        this._tipoCuentaServicio = tipoCuentaServicio;
+        this._clienteServicio = clienteServicio;
     }
 
     [HttpGet]  
-    public async Task<IEnumerable<Cuentum>>  Get(){
+    public async Task<IEnumerable<CuentaDTOout>>  Get(){
         return await _servicio.Get();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Cuentum>> GetById(int id){
-        var cuenta = await _servicio.GetById(id);
+    public async Task<ActionResult<CuentaDTOout>> GetById(int id){
+        var cuenta = await _servicio.GetDTObyId(id);
 
         if (cuenta is null)
             return CuentaNotFound(id);
@@ -31,12 +37,11 @@ public class CuentaController: ControllerBase{
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CuentaDTO cuenta){
-        var clientes = await _servicio.GetClientes();
-        var clienteCuenta = clientes.Where(c => c.Id == cuenta.IdCliente);
+    public async Task<IActionResult> Create(CuentaDTOIn cuenta){
+        var (isValid, message) = await ValidateNewCuenta(cuenta);
 
-        if (!clienteCuenta.Any()){
-            return BadRequest(new {message = $"Client id {clienteCuenta.Id} from request does not exist."});;
+        if (!isValid){
+            return BadRequest(message);;
         } else {
             var newCuenta = await _servicio.Create(cuenta);
             return CreatedAtAction(nameof(GetById), new {id = newCuenta.Id}, newCuenta);
@@ -44,14 +49,15 @@ public class CuentaController: ControllerBase{
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, CuentaDTO cuenta){
-        var clientes = await _servicio.GetClientes();
+    public async Task<IActionResult> Update(int id, CuentaDTOIn cuenta){
+        var (isValid, message) = await ValidateNewCuenta(cuenta);
+
         if (id != cuenta.Id)
-            return BadRequest(new {message = $"Account id {cliente.Id} from request does not match id from route {id}."});
+            return BadRequest(new {message = $"Account id {cuenta.Id} from request does not match id from route {id}."});
 
         var cuentaOnDB = await _servicio.GetById(id);
 
-        if (cuentaOnDB is not null && clientes.Where(c => c.Id == cuenta.IdCliente).Any()){
+        if (cuentaOnDB is not null && isValid){
             await _servicio.Update(id, cuenta);
             return NoContent();
         } else {
@@ -71,8 +77,24 @@ public class CuentaController: ControllerBase{
         } 
     }
 
-    public IActionResult CuentaNotFound(int id){
+    public NotFoundObjectResult CuentaNotFound(int id){
         return NotFound(new {message = $"An account with id #{id} does not exist."});
+    }
+
+    public async Task<(bool isValid, string message)> ValidateNewCuenta(CuentaDTOIn cuenta){
+        var clientes = await _clienteServicio.Get();
+        var clienteCuenta = clientes.Where(c => c.Id == cuenta.IdCliente);
+        var tipoCuenta = _tipoCuentaServicio.GetById(cuenta.TipoCuenta);
+
+        if (!clienteCuenta.Any()){
+            return (false, $"Client id from request does not exist.");
+        }
+
+        if (tipoCuenta is null){
+            return (false, $"Invalid Account Type {cuenta.TipoCuenta}.");
+        }
+
+        return (true, "valid");
     }
  
 }

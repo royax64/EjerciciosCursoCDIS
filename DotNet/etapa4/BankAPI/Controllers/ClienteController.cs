@@ -63,7 +63,7 @@ public class ClienteController: ControllerBase{
         } 
     }
 
-    public IActionResult ClienteNotFound(int id){
+    public NotFoundObjectResult ClienteNotFound(int id){
         return NotFound(new {message = $"A client with id #{id} does not exist."});
     }
  

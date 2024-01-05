@@ -11,6 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSqlServer<BancoContext>(builder.Configuration.GetConnectionString("BankConnection"));
 builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<CuentaService>();
+builder.Services.AddScoped<TipoCuentaService>();
+builder.Services.AddScoped<TipoTransaccionService>();
 
 var app = builder.Build();
 

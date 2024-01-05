@@ -12,19 +12,32 @@ public class CuentaService{
         _contexto = contexto;
     }
 
-    public async Task<IEnumerable<Cuentum>> Get(){
-        return await _contexto.Cuenta.ToListAsync();
-    }
-
-    public async Task<IEnumerable<Cliente>> GetClientes(){
-        return await _contexto.Clientes.ToListAsync();
+    public async Task<IEnumerable<CuentaDTOout>> Get(){
+        return await _contexto.Cuenta.Select(a => new CuentaDTOout{
+            Id = a.Id,
+            NombreTipoCuenta = a.TipoCuentaNavigation.Nombre,
+            NombreCliente = a.IdClienteNavigation.Nombre,
+            Saldo = a.Saldo,
+            FechaRegistro = a.FechaRegistro
+        }).ToListAsync();
     }
 
     public async Task<Cuentum?> GetById(int id){
         return await _contexto.Cuenta.FindAsync(id);
     }
 
-    public async Task<Cuentum> Create(CuentaDTO cuentaBase){
+    public async Task<CuentaDTOout?> GetDTObyId(int id){
+        return await _contexto.Cuenta.Where(a => a.Id == id)
+        .Select(a => new CuentaDTOout{
+            Id = a.Id,
+            NombreTipoCuenta = a.TipoCuentaNavigation.Nombre,
+            NombreCliente = a.IdClienteNavigation.Nombre,
+            Saldo = a.Saldo,
+            FechaRegistro = a.FechaRegistro
+        }).SingleOrDefaultAsync();
+    }
+
+    public async Task<Cuentum> Create(CuentaDTOIn cuentaBase){
         var newCuenta = new Cuentum();
         var clienteCuenta = await _contexto.Clientes.FindAsync(cuentaBase.IdCliente);
         var tipoCuenta = await _contexto.TipoCuenta.FindAsync(cuentaBase.TipoCuenta);
@@ -44,7 +57,7 @@ public class CuentaService{
         return newCuenta; 
     }
 
-    public async Task Update(int id, CuentaDTO cuentaBase){
+    public async Task Update(int id, CuentaDTOIn cuentaBase){
         var cuentaOnDB = await GetById(id);
 
         if (cuentaOnDB is not null){

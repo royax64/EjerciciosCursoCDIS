@@ -1,14 +1,15 @@
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace BankAPI.Data.DTOs;
 
-public class CuentaDTO
+public class CuentaDTOout
 {
     public int Id { get; set; }
 
-    public int TipoCuenta { get; set; }
+    public string? NombreTipoCuenta { get; set; }
 
-    public int IdCliente { get; set; }
+    public string? NombreCliente { get; set; }
 
     public decimal Saldo { get; set; }
 
