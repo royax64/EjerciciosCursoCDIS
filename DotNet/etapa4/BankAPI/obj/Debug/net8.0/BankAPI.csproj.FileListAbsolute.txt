@@ -136,3 +136,4 @@ C:\Users\Roy\Desktop\cursoCDIS\DotNet\etapa4\BankAPI\obj\Debug\net8.0\refint\Ban
 C:\Users\Roy\Desktop\cursoCDIS\DotNet\etapa4\BankAPI\obj\Debug\net8.0\BankAPI.pdb
 C:\Users\Roy\Desktop\cursoCDIS\DotNet\etapa4\BankAPI\obj\Debug\net8.0\BankAPI.genruntimeconfig.cache
 C:\Users\Roy\Desktop\cursoCDIS\DotNet\etapa4\BankAPI\obj\Debug\net8.0\ref\BankAPI.dll
+C:\Users\Roy\Desktop\cursoCDIS\DotNet\etapa4\BankAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
