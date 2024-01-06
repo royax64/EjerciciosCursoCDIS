@@ -35,7 +35,8 @@ public class AdminLoginController: ControllerBase{
     private string getToken(Administrador admin){
         var claims = new[]{
             new Claim(ClaimTypes.Name, admin.Nombre),
-            new Claim(ClaimTypes.Email, admin.Correo)
+            new Claim(ClaimTypes.Email, admin.Correo),
+            new Claim("AdminType", admin.Tipo)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("JWT:Key").Value!));

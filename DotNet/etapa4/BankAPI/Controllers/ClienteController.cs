@@ -16,6 +16,7 @@ public class ClienteController: ControllerBase{
         _servicio = servicio;
     }
 
+    [Authorize(Policy = "MegaBoss")]
     [HttpGet("all")]  
     public async Task<IEnumerable<Cliente>>  Get(){
         return await _servicio.Get();
@@ -53,6 +54,7 @@ public class ClienteController: ControllerBase{
         } 
     }
 
+    [Authorize(Policy = "MegaBoss")]
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id){
         var clienteOnDB = await _servicio.GetById(id);

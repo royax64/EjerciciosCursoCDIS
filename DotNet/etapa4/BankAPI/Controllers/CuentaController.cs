@@ -23,6 +23,7 @@ public class CuentaController: ControllerBase{
         this._clienteServicio = clienteServicio;
     }
 
+    [Authorize(Policy = "MegaBoss")]
     [HttpGet("all")]  
     public async Task<IEnumerable<CuentaDTOout>>  Get(){
         return await _servicio.Get();
@@ -67,6 +68,7 @@ public class CuentaController: ControllerBase{
         } 
     }
 
+    [Authorize(Policy = "MegaBoss")]
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id){
         var cuentaOnDB = await _servicio.GetById(id);

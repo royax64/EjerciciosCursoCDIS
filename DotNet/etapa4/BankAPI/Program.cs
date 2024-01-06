@@ -30,7 +30,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ValidateIssuer = false,
                         ValidateAudience = false
             };
-        });
+});
+
+builder.Services.AddAuthorization(op => {
+    op.AddPolicy("MegaBoss", policy => policy.RequireClaim("AdminType","Boss"));
+});
 
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo {
