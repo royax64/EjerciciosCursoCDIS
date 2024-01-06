@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
+
+
 
 namespace BankAPI.Data.BankModels;
 
@@ -20,6 +22,9 @@ public partial class Cliente
     public string? Correo { get; set; }
 
     public DateTime FechaRegistro { get; set; }
+
+    [MaxLength(30, ErrorMessage = "Password must be no more than 50 characters.")]
+    public string? Passwd { get; set; }
 
     [JsonIgnore]
     public virtual ICollection<Cuentum> Cuenta { get; set; } = new List<Cuentum>();

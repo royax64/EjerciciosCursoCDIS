@@ -86,6 +86,11 @@ public partial class BancoContext : DbContext
                 .HasMaxLength(40)
                 .IsUnicode(false)
                 .HasColumnName("numeroTelefono");
+            entity.Property(e => e.Passwd)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValue("12345")
+                .HasColumnName("passwd");
         });
 
         modelBuilder.Entity<Cuentum>(entity =>

@@ -21,6 +21,9 @@ builder.Services.AddScoped<CuentaService>();
 builder.Services.AddScoped<TipoCuentaService>();
 builder.Services.AddScoped<TipoTransaccionService>();
 builder.Services.AddScoped<AdminLoginService>();
+builder.Services.AddScoped<TransaccionService>();
+builder.Services.AddScoped<ClienteLoginService>();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options => {
@@ -30,10 +33,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ValidateIssuer = false,
                         ValidateAudience = false
             };
-});
+        }
+);
 
 builder.Services.AddAuthorization(op => {
     op.AddPolicy("MegaBoss", policy => policy.RequireClaim("AdminType","Boss"));
+    op.AddPolicy("Cliente", policy => policy.RequireClaim("ClienteId"));
 });
 
 builder.Services.AddSwaggerGen(c => {

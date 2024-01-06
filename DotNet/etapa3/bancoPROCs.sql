@@ -69,12 +69,17 @@ as
 	declare @saldoActual decimal(10,2), @saldoNuevo decimal (10,2)
 	set @saldoActual = (select saldo from Cuenta where id = @cuentaID)
 
-	if @tipo = 2 or @tipo = 4
+	if @tipo = 3 or @tipo = 4
 	begin
 		set @saldoNuevo = @saldoActual - @cantidad
 	end
 	else begin
 		set @saldoNuevo = @saldoActual + @cantidad
+	end
+
+	if @tipo = 1 or @tipo = 3
+	begin
+		set @cuentaext = null
 	end
 
 	begin transaction
